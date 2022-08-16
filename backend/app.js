@@ -5,8 +5,9 @@ const mongoose = require("mongoose");
 
 // internal imports
 const userRoutes = require("./routes/userRoutes");
+const blogRoutes = require("./routes/blogRoutes");
 
-const app = express();
+const app = express(); ///
 dotenv.config();
 
 app.use(express.json());
@@ -20,7 +21,8 @@ mongoose
   .then(() => console.log("Database connected"))
   .catch((err) => console.log(err));
 
-app.use("/", userRoutes);
+app.use("/users", userRoutes);
+app.use("/blogs", blogRoutes);
 
 // server
 app.listen(5000, () => {
