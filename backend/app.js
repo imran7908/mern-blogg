@@ -4,9 +4,9 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
 // internal imports
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
-
 dotenv.config();
 
 // database connection
@@ -17,6 +17,8 @@ mongoose
   })
   .then(() => console.log("Database connected"))
   .catch((err) => console.log(err));
+
+app.use("/", userRoutes);
 
 // server
 app.listen(5000, () => {
