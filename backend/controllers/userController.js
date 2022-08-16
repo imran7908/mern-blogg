@@ -1,11 +1,12 @@
 const User = require("../model/User");
+const bcrypt = require("bcrypt");
 
 const getAllUser = async (req, res, next) => {
   let users;
   try {
     users = await User.find();
   } catch (err) {
-    console.log(err);
+    return console.log(err);
   }
   if (!users) {
     return res.status(404).json({
@@ -22,25 +23,27 @@ const signup = async (req, res, next) => {
   try {
     existingUser = await User.findOne({ email });
   } catch (err) {
-    console.log(err);
+    return console.log(err);
   }
 
   if (existingUser) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Users already exists! Login instead",
     });
   }
 
+  const hashedPassword = bcrypt.hashSync(password, 10);
+
   const user = new User({
     name,
     email,
-    password,
+    password: hashedPassword,
   });
 
   try {
     await user.save();
   } catch (err) {
-    console.log(err);
+    return console.log(err);
   }
 
   return res.status(201).json({ user });

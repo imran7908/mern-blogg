@@ -9,6 +9,8 @@ const userRoutes = require("./routes/userRoutes");
 const app = express();
 dotenv.config();
 
+app.use(express.json());
+
 // database connection
 mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING, {
