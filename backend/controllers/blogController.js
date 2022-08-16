@@ -1,5 +1,7 @@
 const Blog = require("../model/Blog");
 const bcrypt = require("bcrypt");
+const User = require("../model/User");
+const { default: mongoose } = require("mongoose");
 
 const getAllBlog = async (req, res, next) => {
   let blogs;
@@ -18,6 +20,20 @@ const getAllBlog = async (req, res, next) => {
 
 const addBlog = async (req, res, next) => {
   const { title, description, image, user } = req.body;
+  let existingUser;
+
+  try {
+    existingUser = await User.findById(user);
+  } catch (err) {
+    return console.log(err);
+  }
+
+  if (!existingUser) {
+    return res.status(500).json({
+      message: "Unable to find user by this ID!",
+    });
+  }
+
   const blog = new Blog({
     title,
     description,
@@ -27,8 +43,11 @@ const addBlog = async (req, res, next) => {
 
   try {
     await blog.save();
+    existingUser.blogs.push(blog);
+    await existingUser.save();
   } catch (err) {
-    return console.log(err);
+    console.log(err);
+    return res.status(500).json({ message: err });
   }
 
   return res.status(200).json({ blog });
@@ -80,7 +99,9 @@ const deleteBlog = async (req, res, next) => {
   let blog;
 
   try {
-    blog = await Blog.findByIdAndRemove(id);
+    blog = await Blog.findByIdAndRemove(id).populate("user");
+    await blog.user.blogs.pull(blog);
+    await blog.user.save();
   } catch (err) {
     return console.log(err);
   }
@@ -96,4 +117,30 @@ const deleteBlog = async (req, res, next) => {
   });
 };
 
-module.exports = { getAllBlog, addBlog, updateBlog, getById, deleteBlog };
+const getByUserId = async (req, res, next) => {
+  const userId = req.params.id;
+  let userBlogs;
+
+  try {
+    userBlogs = await User.findById(userId).populate("blogs");
+  } catch (err) {
+    return console.log(err);
+  }
+
+  if (!userBlogs) {
+    return res.status(404).json({
+      message: "No blogs found",
+    });
+  }
+
+  return res.status(200).json({ blogs: userBlogs });
+};
+
+module.exports = {
+  getAllBlog,
+  addBlog,
+  updateBlog,
+  getById,
+  deleteBlog,
+  getByUserId,
+};
