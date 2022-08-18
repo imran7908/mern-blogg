@@ -9,9 +9,11 @@ import {
   Tab,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { authActions } from "../store";
 
 const Header = () => {
+  const dispath = useDispatch();
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const [value, setValue] = useState();
   return (
@@ -57,6 +59,7 @@ const Header = () => {
           )}
           {isLoggedIn && (
             <Button
+              onClick={() => dispath(authActions.logout())}
               LinkComponent={Link}
               to="/auth"
               variant="contained"
