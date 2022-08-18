@@ -133,7 +133,7 @@ const getByUserId = async (req, res, next) => {
     });
   }
 
-  return res.status(200).json({ blogs: userBlogs });
+  return res.status(200).json({ user: userBlogs });
 };
 
 module.exports = {
