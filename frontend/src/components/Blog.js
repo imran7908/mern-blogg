@@ -1,14 +1,40 @@
 import {
   Avatar,
+  Box,
   Card,
   CardContent,
   CardHeader,
   CardMedia,
+  IconButton,
   Typography,
 } from "@mui/material";
 import React from "react";
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const Blog = ({ title, description, imageURL, userName }) => {
+const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate(`/myBlogs/${id}`);
+  };
+
+  const deleteRequest = async () => {
+    const res = await axios
+      .delete(`http://127.0.0.1:5000/blogs/${id}`)
+      .catch((err) => console.log(err));
+    const data = await res.data;
+    return data;
+  };
+
+  const handleDelete = () => {
+    deleteRequest()
+      .then(() => navigate("/"))
+      .then(() => navigate("/blogs"));
+  };
+
   return (
     <div>
       <Card
@@ -23,6 +49,16 @@ const Blog = ({ title, description, imageURL, userName }) => {
           },
         }}
       >
+        {isUser && (
+          <Box display="flex">
+            <IconButton onClick={handleEdit} sx={{ marginLeft: "auto" }}>
+              <ModeEditOutlineIcon />
+            </IconButton>
+            <IconButton onClick={handleDelete}>
+              <DeleteOutlineIcon />
+            </IconButton>
+          </Box>
+        )}
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
