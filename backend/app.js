@@ -26,6 +26,12 @@ mongoose
 app.use("/users", userRoutes);
 app.use("/blogs", blogRoutes);
 
+app.get((req, res) => {
+  res.send("Hello world");
+});
+
+const PORT = process.env.PORT || 5000;
+
 // server
 app.listen(process.env.PORT, () => {
   console.log(`server is listening on port ${process.env.PORT}`);
