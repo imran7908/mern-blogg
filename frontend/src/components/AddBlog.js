@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const AddBlog = () => {
+const AddBlog = (props) => {
+  const { URL } = props;
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     title: "",
@@ -20,7 +21,7 @@ const AddBlog = () => {
 
   const sendRequest = async () => {
     const res = await axios
-      .post("http://127.0.0.1:5000/blogs/add", {
+      .post(`${URL}/blogs/add`, {
         title: inputs.title,
         description: inputs.description,
         image: inputs.imageURL,

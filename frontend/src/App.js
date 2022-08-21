@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "./store";
 
 const App = () => {
+  const URL = "https://blogg-mern.herokuapp.com";
   const dispath = useDispatch();
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   useEffect(() => {
@@ -26,13 +27,13 @@ const App = () => {
       <main>
         <Routes>
           {!isLoggedIn ? (
-            <Route path="/auth" element={<Auth />} />
+            <Route URL={URL} path="/auth" element={<Auth />} />
           ) : (
             <>
-              <Route path="/blogs" element={<Blogs />} />
-              <Route path="/myBlogs" element={<UserBlogs />} />
-              <Route path="/myBlogs/:id" element={<BlogDetail />} />
-              <Route path="/blogs/add" element={<AddBlog />} />
+              <Route URL={URL} path="/blogs" element={<Blogs />} />
+              <Route URL={URL} path="/myBlogs" element={<UserBlogs />} />
+              <Route URL={URL} path="/myBlogs/:id" element={<BlogDetail />} />
+              <Route URL={URL} path="/blogs/add" element={<AddBlog />} />
             </>
           )}
         </Routes>

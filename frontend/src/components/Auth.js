@@ -5,7 +5,8 @@ import { useDispatch } from "react-redux";
 import { authActions } from "../store";
 import { useNavigate } from "react-router-dom";
 
-const Auth = () => {
+const Auth = (props) => {
+  const { URL } = props;
   const navigate = useNavigate();
   const dispath = useDispatch();
   const [inputs, setInputs] = useState({
@@ -25,7 +26,7 @@ const Auth = () => {
 
   const sendRequest = async (type = "login") => {
     const res = await axios
-      .post(`http://127.0.0.1:5000/users/${type}`, {
+      .post(`${URL}/users/${type}`, {
         name: inputs.name,
         email: inputs.email,
         password: inputs.password,

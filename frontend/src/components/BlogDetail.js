@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Box, Typography, InputLabel, TextField, Button } from "@mui/material";
 
-const BlogDetail = () => {
+const BlogDetail = (props) => {
+  const { URL } = props;
   const navigate = useNavigate();
   const [blog, setBlog] = useState();
   const id = useParams().id;
@@ -19,7 +20,7 @@ const BlogDetail = () => {
 
   const fetchDetails = async () => {
     const res = await axios
-      .get(`http://127.0.0.1:5000/blogs/${id}`)
+      .get(`${URL}/blogs/${id}`)
       .catch((err) => console.log(err));
     const data = await res.data;
     return data;
@@ -36,7 +37,7 @@ const BlogDetail = () => {
   }, [id]);
   const sendRequest = async () => {
     const res = await axios
-      .put(`http://127.0.0.1:5000/blogs/update/${id}`, {
+      .put(`${URL}/blogs/update/${id}`, {
         title: inputs.title,
         description: inputs.description,
       })

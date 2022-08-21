@@ -14,7 +14,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
+const Blog = ({ URL, title, description, imageURL, userName, isUser, id }) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
@@ -23,7 +23,7 @@ const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
 
   const deleteRequest = async () => {
     const res = await axios
-      .delete(`http://127.0.0.1:5000/blogs/${id}`)
+      .delete(`${URL}/blogs/${id}`)
       .catch((err) => console.log(err));
     const data = await res.data;
     return data;

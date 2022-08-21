@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Blog from "./Blog";
 
-const Blogs = () => {
+const Blogs = (props) => {
+  const { URL } = props;
   const [blogs, setBlogs] = useState();
   const sendRequest = async () => {
     const res = await axios
-      .get("http://127.0.0.1:5000/blogs")
+      .get(`${URL}/blogs`)
       .catch((err) => console.log(err));
     const data = await res.data;
     return data;
   };
   useEffect(() => {
     sendRequest().then((data) => setBlogs(data.blogs));
-  }, []);
+  });
   console.log(blogs);
 
   return (
@@ -21,6 +22,7 @@ const Blogs = () => {
       {blogs &&
         blogs.map((blog, index) => (
           <Blog
+            URL={URL}
             id={blog._id}
             isUser={localStorage.getItem("userId") === blog.user._id}
             title={blog.title}
