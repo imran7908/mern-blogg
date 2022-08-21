@@ -33,6 +33,6 @@ app.get((req, res) => {
 const PORT = process.env.PORT || 5000;
 
 // server
-app.listen(process.env.PORT, () => {
-  console.log(`server is listening on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`server is listening on port ${PORT}`);
 });
